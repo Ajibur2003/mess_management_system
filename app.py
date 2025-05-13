@@ -3,7 +3,7 @@ import mysql.connector
 from datetime import datetime, timedelta
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key_here'
+app.secret_key = '9a4a5e2f4b123ca81b83f7cfb6c5a8d8e64db3dd564f5a2f137e6d2f3cc60cda'
 
 def get_db():
     return mysql.connector.connect(
