@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <style>
+        .mode-section {
+            margin-bottom: 20px;
+        }
+        .toggle-group, .customize-options {
+            margin-left: 20px;
+        }
+        .meal-table {
+            margin-top: 30px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .meal-table th, .meal-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        .meal-table th {
+            background-color: #f2f2f2;
+        }
+        table {
+            border-collapse: collapse;
+            width: 60%;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .alert {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #d9edf7;
+            color: #31708f;
+            border: 1px solid #bce8f1;
+            border-radius: 4px;
+            width: 60%;
+        }
+        .total_meals {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+            border-radius: 5px;
+            font-weight: bold;
+            width: 60%;
+        }
+        .highlight {
+        background-color: #d4edda;
+        font-weight: bold;
+        }
+        .today-row {
+        background-color: #d4edda !important; /* light green */
+        }
+        .today-tag {
+            background-color: #28a745;
+            color: white;
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
+        }
+
+        /* Blinking animation */
+        .blink {
+            animation: blink-animation 1.5s infinite;
+        }
+
+        @keyframes blink-animation {
+            0%, 100% { background-color: #d4edda; }
+            50% { background-color: #c3e6cb; }
+        }
+        .today-row {
+             animation: blink-animation 1.5s infinite;
+        }
+        .today-tag {
+        background-color: #28a745;
+        color: white;
+        font-size: 0.75rem;
+        padding: 2px 6px;
+        border-radius: 4px;
+        margin-left: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Welcome, {{ session.username }}!</h2>
+    <form method="POST">
+        <div class="mode-section">
+            <label>
+                <input type="radio" name="meal_mode" value="continue" required onchange="toggleSections()"> Continue
+            </label>
+            <div class="toggle-group" id="continue-options" style="display: none; margin-left: 20px;">
+                <label><input type="radio" name="continue_option" value="tonight" onclick="toggleRadio(this)"> Today Night</label><br>
+                <label><input type="radio" name="continue_option" value="tomorrow_morning" onclick="toggleRadio(this)"> Tomorrow Morning</label><br>
+                <label><input type="radio" name="continue_option" value="tomorrow_night" onclick="toggleRadio(this)"> Tomorrow Night</label><br>
+                <label><input type="checkbox" id="toggle-checkbox" name="toggle" value="on"> ON/OFF</label>
+            </div>
+        </div>
+
+
+        <div class="mode-section">
+            <label><input type="radio" name="meal_mode" value="just_night" onchange="toggleSections()"> Just Night</label>
+        </div>
+
+        <div class="mode-section">
+            <label><input type="radio" name="meal_mode" value="just_morning" onchange="toggleSections()"> Just Morning</label>
+        </div>
+        <div class="mode-section">
+            <label><input type="radio" name="meal_mode" value="tomorrow_night" onchange="toggleSections()"> Tomorrow Night</label>
+        </div>
+
+      
+        <button type="submit">Submit</button>
+    </form>
+
+
+    {% if message %}
+        <div class="alert">{{ message }}</div>
+    {% endif %}
+
+    <div class="total_meals">
+        <strong>Total meals from the beginning of the month to today:</strong><br>
+        Total morning meals: {{ total_morning }}<br>
+        Total night meals: {{ total_night }}<br>
+        Total meals: {{ total }}
+    </div>
+
+    <h3>Meal Records</h3>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Morning</th>
+            <th>Night</th>
+        </tr>
+        {% for meal in meals %}
+            {% set is_today = meal['date'] == today %}
+        <tr class="{{ 'today-row blink' if is_today else '' }}">
+            <td>
+                {{ meal['date'] }}
+                {% if is_today %}
+                    <span class="today-tag">Today</span>
+                {% endif %}
+            </td>
+            <td>{{ meal['morning'] }}</td>
+            <td>{{ meal['night'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+<script>
+    function toggleSections() {
+        const mode = document.querySelector('input[name="meal_mode"]:checked');
+        if (!mode) return;
+        const selected = mode.value;
+        document.getElementById('continue-options').style.display = (selected === 'continue') ? 'block' : 'none';
+    }
+    window.onload = toggleSections;
+    // Allow re-clicking radio buttons to deselect
+function toggleRadio(radio) {
+    if (radio.checked && radio.dataset.wasChecked === "true") {
+        radio.checked = false;
+        radio.dataset.wasChecked = "false";
+    } else {
+        const radios = document.getElementsByName(radio.name);
+        radios.forEach(r => r.dataset.wasChecked = "false");
+        radio.dataset.wasChecked = "true";
+    }
+}
+</script>
+
+<script>
+    // Optional: hide alert after 4 seconds
+    setTimeout(() => {
+        const alert = document.querySelector('.alert');
+        if (alert) {
+            alert.style.display = 'none';
+        }
+    }, 4000);
+</script>
+
+</body>
+</html>

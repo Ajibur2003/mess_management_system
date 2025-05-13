@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+.alert {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+    border-radius: 5px;
+    font-weight: bold;
+    width: 60%;
+}
+</style>
+
+</head>
+<body>
+    <h1>Welcome to Mess Management</h1>
+    <a href="/register">Register</a> | <a href="/login">Login</a> 
+    
+        
+    <div class="alert">
+        <strong>Today's Meal Summary:</strong><br>
+        Morning Meals: {{ total_morning }}<br>
+        Night Meals: {{ total_night }}<br>
+        <strong>Total meals from the beginning of the month to today:</strong><br>
+        Grand Total morning meals: {{ grand_total_morning }}<br>
+        Grand Total night meals: {{ grand_total_night }}<br>
+        Grand Total meals: {{ grand_total }}
+    </div>
+
+        
+        
+</body>
+</html>
+
