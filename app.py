@@ -8,7 +8,7 @@ app.secret_key = 'your_secret_key_here'
 def get_db():
     return mysql.connector.connect(
         host='sql12.freesqldatabase.com',
-        user='	sql12778676',
+        user='sql12778676',
         password='UawsEyNqL7',
         database='sql12778676'
     )
