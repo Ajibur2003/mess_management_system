@@ -202,8 +202,7 @@ def login():
             conn.close()
             
             if user and blocked == 0:
-                if bcrypt.checkpw(password.encode(), user['password'].encode()):
-                    session['user_id'] = user['id']
+            if bcrypt.checkpw(password.encode(), user['password']):                    session['user_id'] = user['id']
                     session['name'] = user['name']
                     session['phone_number'] = user['phone_number']
                     session['role'] = user['role']
@@ -214,8 +213,7 @@ def login():
                 else:
                     message = "Invalid login credentials"
             elif owner:
-                if bcrypt.checkpw(password.encode(), owner['password'].encode()):
-                    session['owner_id'] = owner['id']
+                if bcrypt.checkpw(password.encode(), owner['password']):                    session['owner_id'] = owner['id']
                     session['owner_phone_number'] = owner['phone_number']
                     session['role'] = 'owner'
                     return redirect(url_for('owner_dashboard'))
