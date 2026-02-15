@@ -188,6 +188,7 @@ def login():
             owner = cursor.fetchone()
             
             user = None
+            blocked = None
             if mess_code:
                 cursor.execute("SELECT mess_code, blocked FROM messes WHERE mess_code = %s", (mess_code,))
                 mess_details = cursor.fetchone()
