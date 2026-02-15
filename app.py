@@ -501,7 +501,7 @@ def owner_dashboard():
     if request.method == 'POST':
         if 'mess_name' in request.form:
             registration_date = request.form.get('registration_date')
-            mess_code = request.form.get('mess_code')
+            mess_code = request.form.get('mess_code').strip().lower()
             mess_name = request.form.get('mess_name')
             mess_address = request.form.get('mess_address', 'none')
             address_link = request.form.get('address_link', 'none')
