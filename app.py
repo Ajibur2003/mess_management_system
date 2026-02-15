@@ -206,18 +206,18 @@ def login():
             
             if user and blocked == 0:
                 if bcrypt.checkpw(password.encode(), user['password'].encode()):                    session['name'] = user['name']
-                    session['phone_number'] = user['phone_number']
-                    session['role'] = user['role']
-                    session['mess_code'] = user['mess_code']
-                    session['blocked'] = user['blocked']
-                    session['mess_blocked'] = blocked
+                        session['phone_number'] = user['phone_number']
+                        session['role'] = user['role']
+                        session['mess_code'] = user['mess_code']
+                        session['blocked'] = user['blocked']
+                        session['mess_blocked'] = blocked
                     return redirect(url_for('portal'))
                 else:
                     flash("Invalid login credentials", "error")
             elif owner:
                 if bcrypt.checkpw(password.encode(), owner['password'].encode()):                    session['owner_phone_number'] = owner['phone_number']
-                    session['role'] = 'owner'
-                    return redirect(url_for('owner_dashboard'))
+                        session['role'] = 'owner'
+                        return redirect(url_for('owner_dashboard'))
                 else:
                     flash("Invalid login credentials", "error")
             else:
