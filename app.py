@@ -160,7 +160,6 @@ def update_guest_meal_types(cursor, conn, meals, user_id, month_start, today, ma
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
-    message = None
     if request.method == 'POST':
         try:
             mess_code = request.form.get('mess_code', '').strip().lower()
@@ -168,19 +167,19 @@ def login():
             password = request.form.get('password', '')
             
             if not phone_number or not password:
-                message = "All fields are required"
-                return render_template('login.html', message=message)
+                flash("All fields are required", "error")
+                return render_template('login.html')
             
             try:
                 phone_number = int(phone_number)
             except ValueError:
-                message = "Invalid phone number"
-                return render_template('login.html', message=message)
+                flash("Invalid phone number", "error")
+                return render_template('login.html')
             
             conn = get_db()
             if not conn:
-                message = "Database connection error"
-                return render_template('login.html', message=message)
+                flash("Database connection error", "error")
+                return render_template('login.html')
                 
             cursor = conn.cursor(dictionary=True)
             
@@ -200,8 +199,8 @@ def login():
                     cursor.execute(f"SELECT * FROM `{users}` WHERE phone_number = %s", (phone_number,))
                     user = cursor.fetchone()
                 else:
-                    message = "Invalid phone number or mess code"
-                    return render_template('login.html', message=message)
+                    flash("Invalid phone number or mess code", "error")
+                    return render_template('login.html')
             
             conn.close()
             
@@ -215,22 +214,22 @@ def login():
                     session['mess_blocked'] = blocked
                     return redirect(url_for('portal'))
                 else:
-                    message = "Invalid login credentials"
+                    flash("Invalid login credentials", "error")
             elif owner:
                 if bcrypt.checkpw(password.encode(), owner['password'] if isinstance(owner['password'], bytes) else owner['password'].encode()):                    
                     session['owner_phone_number'] = owner['phone_number']
                     session['role'] = 'owner'
                     return redirect(url_for('owner_dashboard'))
                 else:
-                    message = "Invalid login credentials"
+                    flash("Invalid login credentials", "error")
             else:
-                message = "Invalid login credentials"
+                flash("Invalid login credentials", "error")
                 
         except Exception as e:
             print(f"Login error: {e}")
-            message = "An error occurred during login"
+            flash("An error occurred during login", "error")
     
-    return render_template('login.html', message=message)
+    return render_template('login.html')
 
 @app.route('/logout')
 def logout():
