@@ -189,15 +189,19 @@ def login():
             
             user = None
             blocked = None
+            mess_code1 = None
             if mess_code:
                 cursor.execute("SELECT mess_code, blocked FROM messes WHERE mess_code = %s", (mess_code,))
                 mess_details = cursor.fetchone()
-                mess_code = mess_details['mess_code'] if mess_details else None
+                mess_code1 = mess_details['mess_code'] if mess_details else None
                 blocked = int(mess_details['blocked']) if mess_details else None
-            if mess_code:
-                users = f"{mess_code}_users"
-                cursor.execute(f"SELECT * FROM `{users}` WHERE phone_number = %s", (phone_number,))
-                user = cursor.fetchone()
+                if mess_code1:
+                    users = f"{mess_code}_users"
+                    cursor.execute(f"SELECT * FROM `{users}` WHERE phone_number = %s", (phone_number,))
+                    user = cursor.fetchone()
+                else:
+                    message = "Invalid phone number or mess code"
+                    return render_template('login.html', message=message)
             
             conn.close()
             
