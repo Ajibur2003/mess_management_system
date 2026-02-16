@@ -206,6 +206,7 @@ def login():
             
             if user and blocked == 0:
                 if bcrypt.checkpw(password.encode(), user['password'].encode()):
+                    session['user_id'] = user['id']
                     session['name'] = user['name']
                     session['phone_number'] = user['phone_number']
                     session['role'] = user['role']
