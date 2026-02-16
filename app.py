@@ -4036,7 +4036,7 @@ def user_meal_amount(unknow=None, know=None):
         mealcharge = 0
         try:
             if total_meals > 0:
-                mealcharge = (((total_marketing - guest_amount) - total_deposit) / total_meals)
+                mealcharge = (((total_marketing - guest_amount)) / total_meals)
             else:
                 mealcharge = 0
         except ZeroDivisionError:
