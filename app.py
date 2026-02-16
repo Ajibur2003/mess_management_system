@@ -324,16 +324,8 @@ def register():
         try:
             registration_date = request.form.get('registration_date')
             name = request.form.get('name')
-            father_name = request.form.get('father_name', 'none')
-            father_number = request.form.get('father_number', 0)
             phone_number = request.form.get('phone_number')
-            whatsapp_number = request.form.get('whatsapp_number', 0)
-            insta_id = request.form.get('insta_id', 'none')
-            address = request.form.get('address', 'none')
             occupation = request.form.get('occupation', 'none')
-            university_name = request.form.get('university_name', 'none')
-            department_name = request.form.get('department_name', 'none')
-            university_id = request.form.get('university_id', 'none')
             instrument_amount = request.form.get('instrument_amount', 0)
             paid = request.form.get('paid', 'unpaid')
             payment_method = request.form.get('payment_method', 'none')
@@ -359,13 +351,11 @@ def register():
             
             cursor.execute(
                 f"""INSERT INTO `{users}` 
-                (registration_date, name, father_name, father_number, phone_number, whatsapp_number, 
-                insta_id, address, occupation, university_name, department_name, university_id, 
-                instrument_amount, paid, payment_method, payment_by, refund_amount, note, password, 
-                mess_code, role) 
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
-                (registration_date, name, father_name, father_number, phone_number, whatsapp_number,
-                 insta_id, address, occupation, university_name, department_name, university_id,
+                (registration_date, name, phone_number, occupation,
+                instrument_amount, paid, payment_method, payment_by, refund_amount, note, password,
+                mess_code, role)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+                (registration_date, name, phone_number, whatsapp_number, occupation,
                  instrument_amount, paid, payment_method, payment_by, refund_amount, note,
                  hashed_password, mess_code, 'user')
             )
