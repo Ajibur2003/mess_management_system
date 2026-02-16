@@ -419,14 +419,16 @@
         {% endif %}
         <h3>Meal Amount Details</h3>
         <h4 class="highlight-h4">Total Meals: {{ moneydata.total_meals }}</h4>
+        <h4>Total Guests: {{ moneydata.total_guests }}</h4>
         <h4>Total Deposit: {{ moneydata.total_deposit }}</h4>
         <h4>Total Alive: {{ moneydata.amount_alive }}</h4>
+        <h4>Total Marketing Expenses: {{ moneydata.total_marketing }}</h4>
         <h4>Total Shope Expenses: {{ moneydata.total_shop }}</h4>
         <h4>Total Veg Expenses: {{ moneydata.total_veg }}</h4>
         <h4>Total NonVeg Expenses: {{ moneydata.total_nonveg }}</h4>
-        <h4>Total Common Expenses: {{ moneydata.total_deposit }}</h4>
+        <h4>Total Other Expenses: {{ moneydata.total_other }}</h4>
+        <h4>Total Common Expenses: {{ moneydata.total_common }}</h4>
         <h4>Total Guest Amount: {{ moneydata.guest_amount }}</h4>
-        <h4>Total Guests: {{ moneydata.total_guests }}</h4>
         <h4>Meal Charge: {{ moneydata.mealcharge }}</h4>
     </div>
     <div>
