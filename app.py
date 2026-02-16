@@ -77,10 +77,12 @@ def update_guest_meal_types(cursor, conn, meals, user_id, month_start, today, ma
                 if marketing_datas:
                     for marketing_data in marketing_datas:
                         count += 1
-                        if count == len(marketing_datas):
-                            marketing_night = marketing_data['night'] if isinstance(marketing_data, dict) else marketing_data[1]
-                            marketing_night = str(marketing_night).strip()
-                            
+                        marketing_night = marketing_data['night'] if isinstance(marketing_data, dict) else marketing_data[1]
+                        marketing_night = str(marketing_night).strip()
+                        if marketing_night not in ['no_need', 'selected']:
+                            current_marketing_night = marketing_night 
+
+                        def update_guest_night():
                             if marketing_night in ['chicken', 'egg', 'fish', 'beef', 'other']:
                                 current_type = guest_night_parts[1] if len(guest_night_parts) > 1 else ''
                                 if current_type != marketing_night:
@@ -91,16 +93,26 @@ def update_guest_meal_types(cursor, conn, meals, user_id, month_start, today, ma
                                 if current_type != 'veg':
                                     update_night = f"{guest_night_count} veg"
                                     update_guest(guest_morning, update_night)
+
+
+                        if count == len(marketing_datas):
+                            if marketing_night in ['no_need', 'selected']:
+                                marketing_night = current_marketing_night
+                            update_guest_night()
+                            
                     count = 0
                     
             elif guest_morning_count != 0 and guest_night_count == 0:
                 if marketing_datas:
                     for marketing_data in marketing_datas:
                         count += 1
-                        if count == len(marketing_datas):
-                            marketing_morning = marketing_data['morning'] if isinstance(marketing_data, dict) else marketing_data[0]
-                            marketing_morning = str(marketing_morning).strip()
-                            
+                        marketing_morning = marketing_data['morning'] if isinstance(marketing_data, dict) else marketing_data[0]
+                        marketing_morning = str(marketing_morning).strip()
+
+                        if marketing_morning not in ['no_need', 'selected']:
+                            current_marketing_morning = marketing_morning 
+
+                        def update_guest_morning():
                             if marketing_morning in ['chicken', 'egg', 'fish', 'beef', 'other']:
                                 current_type = guest_morning_parts[1] if len(guest_morning_parts) > 1 else ''
                                 if current_type != marketing_morning:
@@ -111,19 +123,30 @@ def update_guest_meal_types(cursor, conn, meals, user_id, month_start, today, ma
                                 if current_type != 'veg':
                                     update_morning = f"{guest_morning_count} veg"
                                     update_guest(update_morning, guest_night)
+
+                        if count == len(marketing_datas):
+                            if marketing_morning in ['no_need', 'selected']:
+                                marketing_morning = current_marketing_morning
+                            update_guest_morning()
                     count = 0
                     
             elif guest_morning_count != 0 and guest_night_count != 0:
                 if marketing_datas:
                     for marketing_data in marketing_datas:
                         count += 1
-                        if count == len(marketing_datas):
-                            marketing_morning = marketing_data['morning'] if isinstance(marketing_data, dict) else marketing_data[0]
-                            marketing_night = marketing_data['night'] if isinstance(marketing_data, dict) else marketing_data[1]
-                            
-                            marketing_morning = str(marketing_morning).strip()
-                            marketing_night = str(marketing_night).strip()
-                            
+
+                        marketing_morning = marketing_data['morning'] if isinstance(marketing_data, dict) else marketing_data[0]
+                        marketing_night = marketing_data['night'] if isinstance(marketing_data, dict) else marketing_data[1]
+                        
+                        marketing_morning = str(marketing_morning).strip()
+                        marketing_night = str(marketing_night).strip()
+
+                        if marketing_morning  not in ['no_need', 'selected']:
+                            current_marketing_morning = marketing_morning
+                        if marketing_night not in ['no_need', 'selected']:
+                            current_marketing_night = marketing_night
+
+                        def update_guests():
                             update_guest_morning = None
                             update_guest_night = None
                             
@@ -149,6 +172,19 @@ def update_guest_meal_types(cursor, conn, meals, user_id, month_start, today, ma
                                 final_morning = update_guest_morning if update_guest_morning else guest_morning
                                 final_night = update_guest_night if update_guest_night else guest_night
                                 update_guest(final_morning, final_night)
+
+                        if marketing_morning in ['no_need', 'selected'] or marketing_night in ['no_need', 'selected']:
+                            if count == len(marketing_datas) and marketing_morning in ['no_need', 'selected'] and marketing_night in ['no_need', 'selected']:
+                                marketing_morning = current_marketing_morning
+                                marketing_night = current_marketing_night
+                            elif count == len(marketing_datas) and marketing_morning in ['no_need', 'selected']:
+                                marketing_morning = current_marketing_morning
+                            elif count == len(marketing_datas) and marketing_night in ['no_need', 'selected']:
+                                marketing_night = current_marketing_night
+                            update_guests()
+                        elif count == len(marketing_datas):
+                            update_guests()
+
                     count = 0
                     
         except Exception as e:
