@@ -355,7 +355,7 @@ def register():
                 instrument_amount, paid, payment_method, payment_by, refund_amount, note, password,
                 mess_code, role)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
-                (registration_date, name, phone_number, whatsapp_number, occupation,
+                (registration_date, name, phone_number, occupation,
                  instrument_amount, paid, payment_method, payment_by, refund_amount, note,
                  hashed_password, mess_code, 'user')
             )
