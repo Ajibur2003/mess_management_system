@@ -716,7 +716,7 @@ def owner_dashboard():
                 flash(f'Error: {e}', 'error')
                 return redirect('/owner_dashboard')
             try:
-                cursor.execute(f"INSERT INTO `{variables}` (date) VALUES (%s)", (last_day_of_month,))
+                cursor.execute(f"INSERT INTO `{variables}` (date, meal_calculation_date) VALUES (%s)", (last_day_of_month, last_day_of_month))
                 conn.commit()
             except Exception as e:
                 pass
