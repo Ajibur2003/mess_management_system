@@ -4306,6 +4306,7 @@ def user_meal_amount(unknow=None, know=None):
             "total_shop": total_shop,
             "total_veg": total_veg,
             "total_nonveg": total_nonveg,
+            "total_other": total_other,
             "total_common": total_common
         }
 
