@@ -1019,7 +1019,7 @@ def dashboard():
                         # Time boundaries
                         tonight_start = datetime.strptime('00:00', '%H:%M').time()
                         tonight_end = datetime.strptime('16:00', '%H:%M').time()
-                        tomorrow_morning_start = datetime.strptime('00:00', '%H:%M').time()
+                        tomorrow_morning_start = datetime.strptime('06:00', '%H:%M').time()
                         tomorrow_morning_day_end = datetime.strptime('23:59', '%H:%M').time()
                         tomorrow_morning_day_start = datetime.strptime('00:00', '%H:%M').time()
                         tomorrow_morning_end = datetime.strptime('01:00', '%H:%M').time()
