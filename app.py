@@ -1022,7 +1022,7 @@ def dashboard():
                         tomorrow_morning_start = datetime.strptime('00:00', '%H:%M').time()
                         tomorrow_morning_day_end = datetime.strptime('23:59', '%H:%M').time()
                         tomorrow_morning_day_start = datetime.strptime('00:00', '%H:%M').time()
-                        tomorrow_morning_end = datetime.strptime('04:00', '%H:%M').time()
+                        tomorrow_morning_end = datetime.strptime('01:00', '%H:%M').time()
 
                         # TONIGHT OPTION
                         if selected_option == 'tonight' and toggle is not None and tonight_start <= now <= tonight_end:
@@ -1143,7 +1143,7 @@ def dashboard():
                     # JUST NIGHT MODE OR GUEST NIGHT
                     elif mode == 'just_night' or guest == 'guest_night':
                         try:
-                            if datetime.strptime('00:00', '%H:%M').time() <= now <= datetime.strptime('23:59', '%H:%M').time(): #need change
+                            if datetime.strptime('17:00', '%H:%M').time() <= now <= datetime.strptime('23:59', '%H:%M').time(): #need change
                                 cursor.execute(
                                     "SELECT morning, night, guest_morning, guest_night FROM `{meals}` WHERE date = %s AND id= %s".format(meals=meals),
                                     (today, user_id)
@@ -1186,7 +1186,7 @@ def dashboard():
                             six_am = datetime.strptime('06:00', '%H:%M').time()
                             end_day = datetime.strptime('23:59', '%H:%M').time()
                             midnight = datetime.strptime('00:00', '%H:%M').time()
-                            three_am = datetime.strptime('03:00', '%H:%M').time()
+                            three_am = datetime.strptime('01:00', '%H:%M').time()
 
                             if midnight <= now <= three_am:
                                 # Toggle today's morning meal
