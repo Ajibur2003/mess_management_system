@@ -1143,7 +1143,7 @@ def dashboard():
                     # JUST NIGHT MODE OR GUEST NIGHT
                     elif mode == 'just_night' or guest == 'guest_night':
                         try:
-                            if datetime.strptime('17:00', '%H:%M').time() <= now <= datetime.strptime('23:59', '%H:%M').time(): #need change
+                            if datetime.strptime('00:00', '%H:%M').time() <= now <= datetime.strptime('17:00', '%H:%M').time():
                                 cursor.execute(
                                     "SELECT morning, night, guest_morning, guest_night FROM `{meals}` WHERE date = %s AND id= %s".format(meals=meals),
                                     (today, user_id)
@@ -1186,9 +1186,9 @@ def dashboard():
                             six_am = datetime.strptime('06:00', '%H:%M').time()
                             end_day = datetime.strptime('23:59', '%H:%M').time()
                             midnight = datetime.strptime('00:00', '%H:%M').time()
-                            three_am = datetime.strptime('01:00', '%H:%M').time()
+                            one_am = datetime.strptime('01:00', '%H:%M').time()
 
-                            if midnight <= now <= three_am:
+                            if midnight <= now <= one_am:
                                 # Toggle today's morning meal
                                 cursor.execute(
                                     "SELECT morning, night, guest_morning, guest_night FROM `{meals}` WHERE date = %s AND id= %s".format(meals=meals),
