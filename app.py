@@ -3,6 +3,7 @@ import mysql.connector
 import bcrypt
 import json
 from datetime import datetime, timedelta, date
+import pytz
 
 app = Flask(__name__)
 app.secret_key = '9a4a5e2f4b123ca81b83f7cfb6c5a8d8e64db3dd564f5a2f137e6d2f3cc60cda'
@@ -18,7 +19,8 @@ def get_db():
     except mysql.connector.Error as err:
         print(f"Database connection error: {err}")
         return None
-
+# for same time zone
+ist = pytz.timezone("Asia/Kolkata")
 def update_guest_meal_types(cursor, conn, meals, user_id, month_start, today, marketing):
     count = 0
     
@@ -511,7 +513,7 @@ def owner_dashboard():
         
     cursor = conn.cursor(dictionary=True, buffered=True)
 
-    today = datetime.today().date()
+    today = datetime.now(ist).date()
     month_start = today.replace(day=1)
     next_month = (today.replace(day=28) + timedelta(days=4)).replace(day=1)
     last_day_of_month = next_month - timedelta(days=1)
@@ -864,7 +866,7 @@ def set_values():
     
     cursor = conn.cursor(dictionary=True)
     
-    today = datetime.today().date()
+    today = datetime.now(ist).date()
     month_start = today.replace(day=1)
     next_month = (today.replace(day=28) + timedelta(days=4)).replace(day=1)
     last_day_of_month = next_month - timedelta(days=1)
@@ -944,9 +946,9 @@ def dashboard():
         meals_data = []
 
         # Get today's date and month boundaries
-        today = datetime.today().date()
+        today = datetime.now(ist).date()
         privious_day = today - timedelta(days=1)
-        now = datetime.now().time()
+        now = datetime.now(ist).time()
         month_start = today.replace(day=1)
         next_month = (today.replace(day=28) + timedelta(days=4)).replace(day=1)
         last_day_of_month = next_month - timedelta(days=1)
@@ -1513,8 +1515,8 @@ def manager_dashboard():
         deposit_pending = str(mess_code) + "_deposit_pending"
 
         # Date calculations
-        today = datetime.today().date()
-        now = datetime.now().time()
+        today = datetime.now(ist).date()
+        now = datetime.now(ist).time()
         month_start = today.replace(day=1)
         next_month = (today.replace(day=28) + timedelta(days=4)).replace(day=1)
         last_day_of_month = next_month - timedelta(days=1)
@@ -2160,7 +2162,7 @@ def user_marketing_dashboard():
             cursor = conn.cursor(dictionary=True)
 
             # Date calculations
-            today = datetime.today().date()
+            today = datetime.now(ist).date()
             month_start = today.replace(day=1)
             next_month = (today.replace(day=28) + timedelta(days=4)).replace(day=1)
             last_day_of_month = next_month - timedelta(days=1)
@@ -2433,7 +2435,7 @@ def manager_marketing_dashboard():
         deposit_pending = str(mess_code + "_deposit_pending")
 
         # Date calculations
-        today = datetime.today().date()
+        today = datetime.now(ist).date()
         month_start = today.replace(day=1)
         next_month = (today.replace(day=28) + timedelta(days=4)).replace(day=1)
         last_day_of_month = next_month - timedelta(days=1)
@@ -2827,7 +2829,7 @@ def user_deposit_dashboard():
 
         # Get today's date and month start
         try:
-            today = datetime.today().date()
+            today = datetime.now(ist).date()
             month_start = today.replace(day=1)
         except Exception as date_err:
             print(f"Error getting current date: {str(date_err)}")
@@ -3097,7 +3099,7 @@ def manager_deposit_dashboard():
 
         # Get today's date and month start
         try:
-            today = datetime.today().date()
+            today = datetime.now(ist).date()
             month_start = today.replace(day=1)
         except Exception as date_err:
             print(f"Error getting current date: {str(date_err)}")
@@ -3652,8 +3654,8 @@ def user_meal_amount(unknow=None, know=None):
 
         # Get date information
         try:
-            today = datetime.today().date()
-            now = datetime.now().time()
+            today = datetime.now(ist).date()
+            now = datetime.now(ist).time()
             month_start = today.replace(day=1)
             next_month = (today.replace(day=28) + timedelta(days=4)).replace(day=1)
             last_day_of_month = next_month - timedelta(days=1)
@@ -4048,7 +4050,7 @@ def user_meal_amount(unknow=None, know=None):
                 total_nonveg = int(marketing_data[0].get('SUM(non_veg_money)') or 0)
                 total_other = int(marketing_data[0].get('SUM(other_money)') or 0)
                 total_common = int(marketing_data[0].get('SUM(common_money)') or 0)
-                total_marketing = total_shop + total_veg + total_other
+                total_marketing = total_shop + total_veg + total_nonveg + total_other
         except mysql.connector.Error as db_err:
             print(f"Database error fetching marketing data: {str(db_err)}")
 
@@ -4458,8 +4460,8 @@ def manager_meal_amount():
     meal_charge = str((mess_code) + "_meal_charge")
     variables = str((mess_code) + "_variables")
 
-    today = datetime.today().date()
-    now = datetime.now().time()
+    today = datetime.now(ist).date()
+    now = datetime.now(ist).time()
     month_start = today.replace(day=1)
     next_month = (today.replace(day=28) + timedelta(days=4)).replace(day=1)
     last_day_of_month = next_month - timedelta(days=1)
@@ -4787,10 +4789,10 @@ def today_update():
     meal_charge = str((mess_code) + "_meal_charge")
     variables = str((mess_code) + "_variables")
 
-    today = datetime.today().date()
+    today = datetime.now(ist).date()
     tomorrow = today + timedelta(days=1)
     yesterday = today - timedelta(days=1)
-    now = datetime.now().time()
+    now = datetime.now(ist).time()
     month_start = today.replace(day=1)
     next_month = (today.replace(day=28) + timedelta(days=4)).replace(day=1)
     last_day_of_month = next_month - timedelta(days=1)
@@ -4913,7 +4915,7 @@ def today_update():
             message = "Please select a date."
             session['message'] = message
             return redirect(url_for('today_update'))
-    
+    print("Server IST time:", now)
     return render_template('today_update.html', 
                             todayOrSearch_morning_datas = search_date_morning_datas if search_date_morning_datas else today_morning_datas, 
                             todayOrSearch_total_morning=search_date_total_morning if search_date_total_morning else today_total_morning,   
