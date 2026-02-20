@@ -188,7 +188,21 @@ def update_guest_meal_types(cursor, conn, meals, user_id, month_start, today, ma
                             update_guests()
 
                     count = 0
-                    
+            #all variable are initialized None for do not need paste variablr data
+            guest_meal_data = None
+            marketing_datas = None
+            guest_morning = None  
+            guest_night = None
+            guest_morning_parts = None
+            guest_night_parts = None
+            guest_morning_count = None
+            guest_night_count = None
+            marketing_morning = None
+            current_marketing_morning = None
+            marketing_night = None
+            current_marketing_night = None
+            current_type = None
+            update_night = None           
         except Exception as e:
             print(f"Error processing guest meals for {today_guest_meal}: {e}")
         
